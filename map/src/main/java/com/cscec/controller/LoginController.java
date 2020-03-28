@@ -23,15 +23,33 @@ import com.cscec.model.ext.UserExt;
 import com.cscec.model.User;
 import com.cscec.util.Constant;
 import com.cscec.util.UserUtil;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @Api(tags = {"登录和注销"})
 public class LoginController extends BaseController {
     private static final String logout_success = "退出成功";
 
+    @PostMapping("/logout")
+    @ApiOperation(value = "注销")
+    public GenericResponse logout(HttpServletRequest request) {
+        UserExt user = getUser();
+        if(user !=null){
+            Map<String, String> param = Maps.newHashMap();
+            param.put(Constant.userId, String.valueOf(user.getId()));
+            param.put(Constant.result, logout_success);
+            param.put(Constant.username, user.getUsername());
+            request.getSession().removeAttribute(Constant.user);
+            cachedThreadPool.execute(() -> {
+                JSONObject json = getLoginRecord(getRealIpAddress(request), Long.parseLong(param.get(Constant.userId)), 0, param.get(Constant.result), param.get(Constant.username));
+                commonService.insertLoginRecord(json);
+            });
+        }
+        return success("注销成功");
+    }
+
     @PostMapping("/login")
     @ApiOperation(value = "登录")
-    @ResponseBody
     @ApiImplicitParams({
             @ApiImplicitParam(name = Constant.username, value = "姓名"),
             @ApiImplicitParam(name = Constant.password, value = "密码"),
@@ -108,26 +126,6 @@ public class LoginController extends BaseController {
         Constant.userRandomMap.put(userExt.getId(), userExt);
         request.getSession().setAttribute(Constant.user, userExt);
         return success();
-    }
-
-
-    @GetMapping("/logout")
-    @ResponseBody
-    @ApiOperation(value = "注销")
-    public GenericResponse logout(HttpServletRequest request) {
-        UserExt user = getUser();
-        if(user !=null){
-            Map<String, String> param = Maps.newHashMap();
-            param.put(Constant.userId, String.valueOf(user.getId()));
-            param.put(Constant.result, logout_success);
-            param.put(Constant.username, user.getUsername());
-            request.getSession().removeAttribute(Constant.user);
-            cachedThreadPool.execute(() -> {
-                JSONObject json = getLoginRecord(getRealIpAddress(request), Long.parseLong(param.get(Constant.userId)), 0, param.get(Constant.result), param.get(Constant.username));
-                commonService.insertLoginRecord(json);
-            });
-        }
-        return success("注销成功");
     }
 
 }

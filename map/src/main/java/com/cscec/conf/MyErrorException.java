@@ -1,5 +1,7 @@
 package com.cscec.conf;
 
+import com.cscec.util.response.ErrorCode;
+import com.cscec.util.response.ResponseFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -29,6 +31,10 @@ public class MyErrorException implements ErrorController {
         logger.info("statusCode;" + statusCode);
         if (statusCode != 404) {
             statusCode = 500;
+        }
+        if("POST".equals(request.getMethod())){
+            response.getWriter().print(ResponseFormat.error(statusCode==404?ErrorCode.NOT_FOUND:ErrorCode.UNKONW_ERROR,""+statusCode));
+            return;
         }
         response.sendRedirect("/" + statusCode);
     }

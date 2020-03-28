@@ -87,11 +87,8 @@ public class UserController extends BaseController {
         List<User> data = new ArrayList<>();
         if (user.getAdmin()) {
             data = userService.list(user,username, useable, del,admin);
+            data.parallelStream().forEach(a -> a.setPassword(null));
         }
-//        List<UserExt> result = new ArrayList<>();
-//        for (User _user : data) {
-//            result.add(_user.toExt());
-//        }
         return success(data);
     }
 
@@ -146,7 +143,7 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = "newpwd", value = "新密码", required = true),
             @ApiImplicitParam(name = "oldpwd", value = "旧密码", required = true),
     })
-    public GenericResponse updtePwd(@RequestParam String newpwd,@RequestParam String oldpwd) {
+    public GenericResponse updatePwd(@RequestParam String newpwd,@RequestParam String oldpwd) {
         if (newpwd.equals(oldpwd)) {
             return error(ErrorCode.PARAM_ERROR, "新旧密码不能相同");
         }

@@ -14,4 +14,5 @@ public class ErrorCode {
     public static final int PERMISSION_DENIED=50001;
 
 
+    public static final int NOT_FOUND = 404;
 }

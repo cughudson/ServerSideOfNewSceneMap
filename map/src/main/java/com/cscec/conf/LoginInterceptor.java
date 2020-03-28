@@ -102,7 +102,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 	public List<String> getUrl(){
 		url.add("/login");      //登录页
         url.add("/logout");   //登录action URL
-        //网站静态资源
+//		url.add("/upload");
+//		url.add("/uploadStatus");
+		//网站静态资源
         url.add("/css/**");
         url.add("/js/**");
         url.add("/lib/**");
