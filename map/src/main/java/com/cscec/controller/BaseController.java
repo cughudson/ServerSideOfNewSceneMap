@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cscec.util.response.ErrorCode;
 import com.cscec.util.response.GenericResponse;
 import com.cscec.util.response.ResponseFormat;
 import org.apache.commons.lang3.StringUtils;
@@ -79,6 +80,9 @@ public abstract class BaseController {
 
     public GenericResponse error(int status, String message) {
         return ResponseFormat.error(status,message);
+    }
+    public GenericResponse error( String message) {
+        return ResponseFormat.error(ErrorCode.PARAM_ERROR,message);
     }
     public GenericResponse error(int status, String message,Object data) {
         return ResponseFormat.error(status,message,data);

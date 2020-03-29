@@ -11,6 +11,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Component
@@ -21,10 +22,10 @@ public class FileUploadProgressListener implements ProgressListener {
     //TODO 这块改造成  通过url  传输id    比如 :  /upload/xxx 获取的时候直接截取后面所有的
     public void setSession(HttpSession session) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        logger.info("设置 : setSession"+request.getRequestURI());
+        logger.info("设置 : setSession"+request.getRequestURI()+"\t"+ LocalDateTime.now());
+        session.setAttribute("upload_percent_"+request.getParameter("name"), 0);
+        logger.info("设置 : upload_percent_"+request.getParameter("name")+"\t"+ LocalDateTime.now());
         this.session = session;
-        session.setAttribute("upload_file_"+request.getParameter("id"), 0);
-        logger.info("设置 : upload_file_"+request.getParameter("id"));
     }
 
    long time=0;
@@ -32,10 +33,10 @@ public class FileUploadProgressListener implements ProgressListener {
     public void update(long pBytesRead, long pContentLength, int pItems) {
         int percent = (int) (pBytesRead * 100.0 / pContentLength);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        session.setAttribute("upload_file_"+request.getParameter("id"), percent);
-        String str=pItems+"更新：upload_file_"+request.getParameter("id")+"::"+percent +"\t "+pBytesRead+"/"+pContentLength;
+        session.setAttribute("upload_percent_"+request.getParameter("name"), percent);
+        String str=pItems+"更新：upload_percent_"+request.getParameter("name")+"::"+percent +"\t "+pBytesRead+"/"+pContentLength;
         long nowTime=new Date().getTime()/1000;
-        logger.info(str);
+//        logger.info(str);
 //        if(nowTime -5> time){
 //            time=nowTime;
 //            logger.info(str);

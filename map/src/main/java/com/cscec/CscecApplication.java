@@ -25,6 +25,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableScheduling
 public class CscecApplication {
 
+    // 用现在有点demo 改造 这个项目 TODO
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(CscecApplication.class);
         springApplication.addListeners((ApplicationListener<ApplicationStartedEvent>) CscecApplication::onApplicationEvent);
@@ -35,32 +36,8 @@ public class CscecApplication {
 //        SpringUtil.getBean(Scheduler.class).init();
     }
 
-    @Bean(name = "multipartResolver")
-    public MultipartResolver multipartResolver(){
-        return new CustomMultipartResolver();
-    }
-    @Bean
-    public CookieSerializer httpSessionIdResolver() {
-        DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
-        // 取消仅限同一站点设置
-        cookieSerializer.setSameSite(null);
-        cookieSerializer.setCookieName("mySessionId");
-        return cookieSerializer;
-    }
-
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", buildConfig()); // 4
-        return new CorsFilter(source);
-    }
-    private CorsConfiguration buildConfig() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("*"); // 1 允许任何域名使用
-        corsConfiguration.addAllowedHeader("*"); // 2 允许任何头
-        corsConfiguration.addAllowedMethod("*");// 3 允许任何方法（post、get等）
-//        corsConfiguration.allowCredentials(false)
-        corsConfiguration.setAllowCredentials(true);
-        return corsConfiguration;
-    }
+//    @Bean(name = "multipartResolver")
+//    public MultipartResolver multipartResolver(){
+//        return new CustomMultipartResolver();
+//    }
 }
