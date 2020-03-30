@@ -19,8 +19,7 @@ import java.util.*;
 public class FileController extends BaseController {
 
     @PostMapping(value = "/upload")
-    public GenericResponse upload( @RequestParam(value = "file")
-                    MultipartFile file) throws IOException {
+    public GenericResponse upload(Map map, MultipartFile file) throws IOException {
         try {
             Calendar cal = Calendar.getInstance();
             Integer year = cal.get(Calendar.YEAR);
