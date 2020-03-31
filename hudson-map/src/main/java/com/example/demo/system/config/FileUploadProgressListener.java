@@ -1,9 +1,11 @@
 package com.example.demo.system.config;
 
+import com.example.demo.system.util.StringUtils;
 import org.apache.commons.fileupload.ProgressListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,9 +18,10 @@ public class FileUploadProgressListener implements ProgressListener {
 
     public void setSession(HttpSession session) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String id=request.getHeader("id");
+        session.setAttribute("upload_percent_"+id, 0);
         this.session = session;
-        session.setAttribute("upload_percent_"+request.getParameter("id"), 0);
-        System.out.println("设置 : upload_percent_"+request.getParameter("id"));
+//        System.out.println("设置 : upload_percent_"+request.getParameter("id"));
     }
 
    long time=0;
@@ -26,8 +29,12 @@ public class FileUploadProgressListener implements ProgressListener {
     public void update(long pBytesRead, long pContentLength, int pItems) {
         int percent = (int) (pBytesRead * 100.0 / pContentLength);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        session.setAttribute("upload_percent_"+request.getParameter("id"), percent);
-        String str=pItems+"更新：upload_percent_"+request.getParameter("id")+"::"+percent +"\t "+pBytesRead+"/"+pContentLength;
+        String id=request.getHeader("id");
+        if(StringUtils.isEmpty(id)){
+            id=request.getParameter("id");
+        }
+        session.setAttribute("upload_percent_"+id, percent);
+        String str=pItems+"更新：upload_percent_"+id+"::"+percent +"\t "+pBytesRead+"/"+pContentLength;
         long nowTime=new Date().getTime()/1000;
         if(nowTime != time){
             System.out.println(str);

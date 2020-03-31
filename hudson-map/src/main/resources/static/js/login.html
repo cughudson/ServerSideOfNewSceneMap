@@ -5,7 +5,7 @@
     <title>测试</title>
 </head>
 <body>
-<form id="form" action="http://111.229.70.92:8080/upload?id=test" method="POST" enctype="multipart/form-data" onsubmit="return upload();">
+<form id="form" action="/upload" method="POST" enctype="multipart/form-data" onsubmit="return upload();">
     <input type="file" name="file"/>
     <input id="id"  value="test" >
     <br/>
@@ -20,30 +20,34 @@
 
 <input type=button  value="获取/user/list" onclick="listData()" />
 
+ajaxSubmit 提交的时候 必须把id 放入headers中
+获取进度三种方式都可以  1?id=xxx 2 post {id:"xx"} 3 headers
+xhrFields: {
+withCredentials: true
+},
+headers: {
+id:$("#id").val()
+},
+
 
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.min.js"></script>
 <script>
-    // url="http://111.229.70.92:8080";
-    url='';
+    url="";
     function upload() {
-        // $("#form").ajaxSubmit(function(message) {
-        //     console.log("ajax submit success");
-        //     console.log(message);
-        //     alert(JSON.stringify(message));
-        //     $("html").append(JSON.stringify(message)+"<br>");
-        //     clearInterval(interval);
-        // });
         $("#form").ajaxSubmit({
-            url: url+"/upload?id="+$("#id").val(),
+            url: url+"/upload",
             type: "post",
             xhrFields: {
                 withCredentials: true
             },
-            enctype:'multipart/form-data',
+            headers: {
+                id:$("#id").val()
+            },
             success: function(data) {
                 clearInterval(interval);
+                $("html").append(JSON.stringify(data)+"<br>");
             }
         });
 
@@ -61,7 +65,6 @@
                     $("html").append(JSON.stringify(result)+"<br>");
                     if(parseInt(result)==100){
                         console.log('end ..............');
-                        clearInterval(interval);
                     }
                 }
             });

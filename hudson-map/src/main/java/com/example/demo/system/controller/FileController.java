@@ -4,9 +4,11 @@ package com.example.demo.system.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.system.base.BaseController;
 import com.example.demo.system.response.GenericResponse;
+import com.example.demo.system.util.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +21,7 @@ import java.util.*;
 public class FileController extends BaseController {
 
     @PostMapping(value = "/upload")
-    public GenericResponse upload(@RequestParam  MultipartFile file) throws IOException {
+    public GenericResponse upload(MultipartFile file) throws IOException {
         try {
             Calendar cal = Calendar.getInstance();
             Integer year = cal.get(Calendar.YEAR);
@@ -48,19 +50,26 @@ public class FileController extends BaseController {
             JSONObject result=new JSONObject();
             result.put("url",destUrl + destFileName);
             result.put("originalFilename",file.getOriginalFilename());
-            request.getSession().removeAttribute("upload_percent_"+request.getParameter("id"));
+
+            request.getSession().removeAttribute("upload_percent_"+getId());
             return success(result);
         }catch (Exception e){
             e.printStackTrace();
            throw  e;
         }
     }
+    public String getId(){
+        String id=request.getHeader("id");
+        if(StringUtils.isEmpty(id)){
+            id=request.getParameter("id");
+        }
+        return id;
+    }
 
     @RequestMapping(value = "/uploadStatus")
     public GenericResponse uploadStatus(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        Object percent = session.getAttribute("upload_percent_"+request.getParameter("id"));
-        System.out.println("uploadStatus : upload_percent_"+request.getParameter("id")+":"+percent);
+        Object percent = request.getSession().getAttribute("upload_percent_"+getId());
+        System.out.println("uploadStatus : upload_percent_"+getId()+":"+percent);
         return success(null != percent ? (Integer) percent : 0);
     }
 }
