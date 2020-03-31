@@ -1,8 +1,11 @@
 package com.example.demo.system.util;
 
 import org.springframework.util.DigestUtils;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
-public class UserUtil {
+public class MD5Util {
 
     public static final int salt=961486743;
     public static String getPassword(int salt, String password) {
@@ -22,5 +25,8 @@ public class UserUtil {
     }
     public static String getMd5(byte[] bytes){
         return DigestUtils.md5DigestAsHex(bytes);
+    }
+    public static String getMD5(File file) throws IOException {
+        return DigestUtils.md5DigestAsHex(new FileInputStream(file));
     }
 }

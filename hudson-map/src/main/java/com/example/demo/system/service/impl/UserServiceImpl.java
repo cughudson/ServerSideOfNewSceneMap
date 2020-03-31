@@ -3,9 +3,11 @@ package com.example.demo.system.service.impl;
 import com.example.demo.system.base.BaseServiceImpl;
 import com.example.demo.system.mapper.CommonMapper;
 import com.example.demo.system.entity.User;
+import com.example.demo.system.mapper.UserMapper;
 import com.example.demo.system.service.UserService;
 import com.example.demo.system.util.Constant;
-import com.example.demo.system.util.UserUtil;
+import com.example.demo.system.util.MD5Util;
+import com.example.demo.system.util.MyMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -26,7 +28,11 @@ public class UserServiceImpl  extends BaseServiceImpl<User> implements UserServi
     @Autowired
     private CommonMapper commonMapper;
 
+    @Autowired
+    public UserMapper mapper;
+
     private static Random random = new Random();
+
 
     @Override
     public User findByName(String username) {
@@ -36,8 +42,13 @@ public class UserServiceImpl  extends BaseServiceImpl<User> implements UserServi
     }
 
     @Override
+    public MyMapper<User> getMapper() {
+        return mapper;
+    }
+
+    @Override
     public int insert(User user) {
-        user.setPassword(UserUtil.getPassword(user.getPassword()));
+        user.setPassword(MD5Util.getPassword(user.getPassword()));
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
         user.setLastLoginTime(new Date());

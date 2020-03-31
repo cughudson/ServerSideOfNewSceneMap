@@ -7,7 +7,7 @@ import com.example.demo.system.entity.ext.UserExt;
 import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.util.Constant;
-import com.example.demo.system.util.UserUtil;
+import com.example.demo.system.util.MD5Util;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -79,7 +79,7 @@ public class LoginController extends BaseController {
                     return error(ErrorCode.PARAM_ERROR, result);
                 }
                 user = userService.findByName(username);
-                if (user != null && !user.getPassword().equals(UserUtil.getPassword( password))) {
+                if (user != null && !user.getPassword().equals(MD5Util.getPassword( password))) {
                     result = "密码错误";
                     return error(ErrorCode.USER_PWD_ERROR, result);
                 }

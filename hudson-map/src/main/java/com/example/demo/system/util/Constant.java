@@ -73,6 +73,8 @@ public class Constant {
     public static final String enable = "enable";
     public static final String useable = "useable";
     public static final String del = "del";
+    public static final String delete = "delete";
+
     public static final String delTime = "delTime";
 
     public static final String dimission = "dimission";

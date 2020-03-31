@@ -4,15 +4,12 @@ package com.example.demo.system.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.system.base.BaseController;
 import com.example.demo.system.response.GenericResponse;
+import com.example.demo.system.util.MD5Util;
 import com.example.demo.system.util.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -46,16 +43,15 @@ public class FileController extends BaseController {
             //写入目的文件
             String destFileName = UUID.randomUUID().toString().replaceAll("-", "") + suffix;
             file.transferTo(new File(destPath + destFileName));
-//            return destUrl + destFileName;
             JSONObject result=new JSONObject();
             result.put("url",destUrl + destFileName);
             result.put("originalFilename",file.getOriginalFilename());
-
+            result.put("id", MD5Util.getMD5(new File(destPath + destFileName)));
             request.getSession().removeAttribute("upload_percent_"+getId());
             return success(result);
         }catch (Exception e){
-            e.printStackTrace();
-           throw  e;
+            logger.info(e.getMessage(),e);
+            throw  e;
         }
     }
     public String getId(){

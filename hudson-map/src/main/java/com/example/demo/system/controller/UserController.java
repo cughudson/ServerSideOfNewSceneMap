@@ -8,7 +8,7 @@ import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.response.MyException;
 import com.example.demo.system.util.Constant;
-import com.example.demo.system.util.UserUtil;
+import com.example.demo.system.util.MD5Util;
 import com.github.pagehelper.util.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -50,7 +50,7 @@ public class UserController extends BaseController {
         if(StringUtils.isEmpty(password)){
             password=Constant.defaultPassword;
         }
-        password= UserUtil.getPassword(password);
+        password= MD5Util.getPassword(password);
         User user= User.builder().username(username)
                 .password(password)
                 .admin(false)
@@ -148,8 +148,8 @@ public class UserController extends BaseController {
             return error(ErrorCode.PARAM_ERROR, "新旧密码不能相同");
         }
         User user = getUser();
-        if (user.getPassword().equals(UserUtil.getPassword( oldpwd))) {
-            user.setPassword(UserUtil.getPassword(newpwd));
+        if (user.getPassword().equals(MD5Util.getPassword( oldpwd))) {
+            user.setPassword(MD5Util.getPassword(newpwd));
             userService.update(user);
             return success();
         } else {
@@ -176,7 +176,7 @@ public class UserController extends BaseController {
         if(StringUtils.isEmpty(password)){
             password=Constant.defaultPassword;
         }
-        updateUser.setPassword(UserUtil.getPassword( password));
+        updateUser.setPassword(MD5Util.getPassword( password));
         userService.update(updateUser);
         return success();
     }
@@ -195,7 +195,7 @@ public class UserController extends BaseController {
         Long time=System.currentTimeMillis()/1000;
 //        DesUtil.encode3Des(user.getPassword(),user.getId()+"|"+time) 本来想做加解密 但是没必要
         Long userId= getUser().getId();
-        String token= UserUtil.getMd5(userId+"|"+ UUID.randomUUID());
+        String token= MD5Util.getMd5(userId+"|"+ UUID.randomUUID());
         Long expireTime=time+Constant.tokenExpire;
         JSONObject result=new JSONObject();
         result.put("token",token);

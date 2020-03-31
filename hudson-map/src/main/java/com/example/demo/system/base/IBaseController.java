@@ -13,7 +13,7 @@ import java.util.List;
 
 public abstract class IBaseController<T>  extends  BaseController{
     public abstract BaseService<T> getService();
-    @GetMapping("selectById")
+//    @GetMapping("selectById")
     public GenericResponse selectById(Integer id){
         T t=selectByPrimaryKey(id);
         if(t==null){
@@ -21,13 +21,13 @@ public abstract class IBaseController<T>  extends  BaseController{
         }
         return success(t);
     }
-    @DeleteMapping("del")
+//    @DeleteMapping("del")
     public GenericResponse del(Integer id){
         this.getService().deleteByPrimaryKey(id);
         return success();
     }
 
-    @PostMapping("edit")
+//   @PostMapping("edit")
     public GenericResponse edit(@RequestBody T t){
         this.getService().updateByPrimaryKeySelective(t);
         return success();
