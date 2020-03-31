@@ -19,7 +19,7 @@ import java.util.*;
 public class FileController extends BaseController {
 
     @PostMapping(value = "/upload")
-    public GenericResponse upload(Map map, MultipartFile file) throws IOException {
+    public GenericResponse upload(@RequestParam  MultipartFile file) throws IOException {
         try {
             Calendar cal = Calendar.getInstance();
             Integer year = cal.get(Calendar.YEAR);
@@ -48,6 +48,7 @@ public class FileController extends BaseController {
             JSONObject result=new JSONObject();
             result.put("url",destUrl + destFileName);
             result.put("originalFilename",file.getOriginalFilename());
+            request.getSession().removeAttribute("upload_percent_"+request.getParameter("id"));
             return success(result);
         }catch (Exception e){
             e.printStackTrace();
