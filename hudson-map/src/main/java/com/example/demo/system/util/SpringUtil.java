@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 public class SpringUtil implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
+    public static void setContext(ApplicationContext applicationContext){
+        if (SpringUtil.applicationContext == null) {
+            SpringUtil.applicationContext = applicationContext;
+        }
+    }
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (SpringUtil.applicationContext == null) {
             SpringUtil.applicationContext = applicationContext;

@@ -43,7 +43,7 @@ public class DemoApplication {
         });
 
         ApplicationContext applicationContext = springApplication.run(args);
-        SpringUtil.setApplicationContext1(applicationContext);
+//        SpringUtil.setContext(applicationContext);
     }
     private static void onApplicationEvent(ApplicationStartedEvent event) {
         System.out.println("application Started event");
