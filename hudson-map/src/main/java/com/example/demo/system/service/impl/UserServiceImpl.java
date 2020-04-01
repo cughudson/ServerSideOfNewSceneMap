@@ -1,13 +1,11 @@
 package com.example.demo.system.service.impl;
 
 import com.example.demo.system.base.BaseServiceImpl;
-import com.example.demo.system.mapper.CommonMapper;
 import com.example.demo.system.entity.User;
 import com.example.demo.system.mapper.UserMapper;
 import com.example.demo.system.service.UserService;
 import com.example.demo.system.util.Constant;
 import com.example.demo.system.util.MD5Util;
-import com.example.demo.system.util.MyMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -23,27 +21,15 @@ import java.util.Random;
 
 @Transactional(rollbackFor = Exception.class)
 @Service
-public class UserServiceImpl  extends BaseServiceImpl<User> implements UserService {
-
-    @Autowired
-    private CommonMapper commonMapper;
-
-    @Autowired
-    public UserMapper mapper;
+public class UserServiceImpl  extends BaseServiceImpl<User,UserMapper> implements UserService {
 
     private static Random random = new Random();
-
 
     @Override
     public User findByName(String username) {
         Example example = new Example(User.class);
         example.and().andEqualTo(Constant.username, username);
         return mapper.selectOneByExample(example);
-    }
-
-    @Override
-    public MyMapper<User> getMapper() {
-        return mapper;
     }
 
     @Override
@@ -89,7 +75,6 @@ public class UserServiceImpl  extends BaseServiceImpl<User> implements UserServi
         example.orderBy(Constant.createTime).desc(); // 排序
         return mapper.selectByExample(example);
     }
-
 
     @Override
     public void delCanDel(List<User> list) {

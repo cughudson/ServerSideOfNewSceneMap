@@ -1,13 +1,11 @@
 package com.example.demo.system.controller;
 
-import com.example.demo.system.base.BaseService;
 import com.example.demo.system.base.IBaseController;
 import com.example.demo.system.entity.Image;
 import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.response.MyException;
 import com.example.demo.system.response.ResponseFormat;
-import com.example.demo.system.service.ImageService;
 import com.example.demo.system.util.Constant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -15,7 +13,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,11 +21,8 @@ import java.util.Date;
 import java.util.List;
 
 @Api(tags = {"图片"})
-
 @RestController
 public class ImageController extends IBaseController<Image> {
-    @Autowired
-    private ImageService service;
 
     @PostMapping("/insert")
     @ApiOperation(value = "新增图片")
@@ -90,8 +84,4 @@ public class ImageController extends IBaseController<Image> {
         }
     }
 
-    @Override
-    public BaseService<Image> getService() {
-        return service;
-    }
 }

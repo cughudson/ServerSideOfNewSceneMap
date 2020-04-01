@@ -4,6 +4,7 @@ import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.response.MyException;
 import com.example.demo.system.response.ResponseFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 public abstract class IBaseController<T>  extends  BaseController{
-    public abstract BaseService<T> getService();
+    @Autowired
+    public  BaseService<T> service;
 //    @GetMapping("selectById")
     public GenericResponse selectById(Integer id){
         T t=selectByPrimaryKey(id);
@@ -23,13 +25,13 @@ public abstract class IBaseController<T>  extends  BaseController{
     }
 //    @DeleteMapping("del")
     public GenericResponse del(Integer id){
-        this.getService().deleteByPrimaryKey(id);
+        this.service.deleteByPrimaryKey(id);
         return success();
     }
 
 //   @PostMapping("edit")
     public GenericResponse edit(@RequestBody T t){
-        this.getService().updateByPrimaryKeySelective(t);
+        this.service.updateByPrimaryKeySelective(t);
         return success();
     }
 
@@ -43,45 +45,45 @@ public abstract class IBaseController<T>  extends  BaseController{
     }
     // 新增数据
     public int insert(T t){
-        return this.getService().insert(t);
+        return this.service.insert(t);
     }
     public int insertSelective(T t){
-        return this.getService().insertSelective(t);
+        return this.service.insertSelective(t);
     }
 
     // 删除
     int  deleteByPrimaryKey(Object id){
-        return this.getService().deleteByPrimaryKey(id);
+        return this.service.deleteByPrimaryKey(id);
     }
     // 改
     public int updateByPrimaryKey(T t){
-        return this.getService().updateByPrimaryKeySelective(t);
+        return this.service.updateByPrimaryKeySelective(t);
     }
     public int updateByPrimaryKeySelective(T t){
-        return this.getService().updateByPrimaryKeySelective(t);
+        return this.service.updateByPrimaryKeySelective(t);
     }
     public int updateByExampleSelective(T t,Object object){
-        return this.getService().updateByExampleSelective(t,object);
+        return this.service.updateByExampleSelective(t,object);
     }
     //查询
     public List<T> select(T t){
-        return this.getService().select(t);
+        return this.service.select(t);
     }
     public T selectOne(T t){
-        return this.getService().selectOne(t);
+        return this.service.selectOne(t);
     }
     public T selectByPrimaryKey(Object id){
-        return this.getService().selectByPrimaryKey(id);
+        return this.service.selectByPrimaryKey(id);
     }
     public List<T> selectAll(){
-        return this.getService().selectAll();
+        return this.service.selectAll();
     }
-    public List<T> selectByExample(Object object){return this.getService().selectByExample(object);}
+    public List<T> selectByExample(Object object){return this.service.selectByExample(object);}
     public int selectCount(T t){
-        return this.getService().selectCount(t);
+        return this.service.selectCount(t);
     }
     public int selectCountByExample(Object object){
-        return this.getService().selectCountByExample(object);
+        return this.service.selectCountByExample(object);
     }
     // 通用方法  结束
 }
