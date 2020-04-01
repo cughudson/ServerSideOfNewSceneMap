@@ -6,6 +6,7 @@ import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.response.MyException;
 import com.example.demo.system.response.ResponseFormat;
+import com.example.demo.system.service.ImageService;
 import com.example.demo.system.util.Constant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,12 +23,12 @@ import java.util.List;
 
 @Api(tags = {"图片"})
 @RestController
-public class ImageController extends IBaseController<Image> {
+public class ImageController extends IBaseController<Image, ImageService> {
 
     @PostMapping("/insert")
     @ApiOperation(value = "新增图片")
     public GenericResponse insertE(@RequestBody Image image){
-        if(service.selectByPrimaryKey(image.getId())!=null){
+        if(getService().selectByPrimaryKey(image.getId())!=null){
             throw new MyException(error(ErrorCode.DATA_EXISTS, "该图片已经存在不能新增"));
         }
         image.setUserId(getUser().getId());
@@ -42,7 +43,7 @@ public class ImageController extends IBaseController<Image> {
     @ApiOperation(value = "编辑图片")
     public GenericResponse edit(@RequestBody Image image) {
         checkPermission(image.getId());
-        return success(service.updateByPrimaryKeySelective(image));
+        return success(getService().updateByPrimaryKeySelective(image));
     }
 
     @PostMapping("delete")
@@ -54,8 +55,8 @@ public class ImageController extends IBaseController<Image> {
     public GenericResponse delete(String id,Boolean delete){
         checkPermission(id);
         Image image=Image.builder().id(id).delete(delete).build();
-        service.updateByPrimaryKeySelective(image);
-        return success(service.selectByPrimaryKey(id));
+        getService().updateByPrimaryKeySelective(image);
+        return success(getService().selectByPrimaryKey(id));
     }
 
 
@@ -69,13 +70,13 @@ public class ImageController extends IBaseController<Image> {
     public GenericResponse list(int pageNum,int pageSize,Boolean delete){
         Image image=Image.builder().delete(delete).build();
         PageHelper.startPage(pageNum,pageSize);
-        List list=service.select(image);
+        List list=getService().select(image);
         PageInfo pageInfo=new PageInfo(list);
         return success(pageInfo);
     }
 
     public void checkPermission(String id){
-        Image tmp=service.selectByPrimaryKey(id);
+        Image tmp=getService().selectByPrimaryKey(id);
         if(tmp==null){
             throw  new MyException(ResponseFormat.error(ErrorCode.DATA_NOT_EXISTS,"id 无效"));
         }

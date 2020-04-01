@@ -17,20 +17,20 @@ public abstract class BaseServiceImpl<T,M> implements  BaseService<T> {
     @Autowired
     private CommonMapper commonMapper;
 
-//   public MyMapper<T> mapper{
-//       if(mapper ==null){
-//           Type superClass = getClass().getGenericSuperclass();
-//           Type type = ((ParameterizedType) superClass).getActualTypeArguments()[1];
-//           Class<M> classType;
-//           if (type instanceof ParameterizedType) {
-//               classType = (Class<M>) ((ParameterizedType) type).getRawType();
-//           } else {
-//               classType = (Class<M>) type;
-//           }
-//           this.mapper = (MyMapper) SpringUtil.getBean(classType);
-//       }
-//       return mapper;
-//   }
+   public MyMapper<T> mapper(){
+       if(mapper ==null){
+           Type superClass = getClass().getGenericSuperclass();
+           Type type = ((ParameterizedType) superClass).getActualTypeArguments()[1];
+           Class<M> classType;
+           if (type instanceof ParameterizedType) {
+               classType = (Class<M>) ((ParameterizedType) type).getRawType();
+           } else {
+               classType = (Class<M>) type;
+           }
+           this.mapper = (MyMapper) SpringUtil.getBean(classType);
+       }
+       return mapper;
+   }
 
     //增
     public int insert(T t) {

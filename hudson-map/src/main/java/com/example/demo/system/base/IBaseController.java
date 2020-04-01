@@ -4,17 +4,35 @@ import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.response.MyException;
 import com.example.demo.system.response.ResponseFormat;
+import com.example.demo.system.util.MyMapper;
+import com.example.demo.system.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.annotation.Resource;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
-public abstract class IBaseController<T>  extends  BaseController{
-    @Autowired
-    public  BaseService<T> service;
+public abstract class IBaseController<T,M>  extends  BaseController{
+    private BaseService<T> service;
+
+    public BaseService<T> getService(){
+        if(service ==null){
+            Type superClass = getClass().getGenericSuperclass();
+            Type type = ((ParameterizedType) superClass).getActualTypeArguments()[1];
+            Class<M> classType;
+            if (type instanceof ParameterizedType) {
+                classType = (Class<M>) ((ParameterizedType) type).getRawType();
+            } else {
+                classType = (Class<M>) type;
+            }
+            this.service = (BaseService) SpringUtil.getBean(classType);
+        }
+        return service;
+    }
+
+
 //    @GetMapping("selectById")
     public GenericResponse selectById(Integer id){
         T t=selectByPrimaryKey(id);
@@ -25,13 +43,13 @@ public abstract class IBaseController<T>  extends  BaseController{
     }
 //    @DeleteMapping("del")
     public GenericResponse del(Integer id){
-        this.service.deleteByPrimaryKey(id);
+        getService().deleteByPrimaryKey(id);
         return success();
     }
 
 //   @PostMapping("edit")
     public GenericResponse edit(@RequestBody T t){
-        this.service.updateByPrimaryKeySelective(t);
+        getService().updateByPrimaryKeySelective(t);
         return success();
     }
 
@@ -45,45 +63,45 @@ public abstract class IBaseController<T>  extends  BaseController{
     }
     // 新增数据
     public int insert(T t){
-        return this.service.insert(t);
+        return getService().insert(t);
     }
     public int insertSelective(T t){
-        return this.service.insertSelective(t);
+        return getService().insertSelective(t);
     }
 
     // 删除
     int  deleteByPrimaryKey(Object id){
-        return this.service.deleteByPrimaryKey(id);
+        return getService().deleteByPrimaryKey(id);
     }
     // 改
     public int updateByPrimaryKey(T t){
-        return this.service.updateByPrimaryKeySelective(t);
+        return getService().updateByPrimaryKeySelective(t);
     }
     public int updateByPrimaryKeySelective(T t){
-        return this.service.updateByPrimaryKeySelective(t);
+        return getService().updateByPrimaryKeySelective(t);
     }
     public int updateByExampleSelective(T t,Object object){
-        return this.service.updateByExampleSelective(t,object);
+        return getService().updateByExampleSelective(t,object);
     }
     //查询
     public List<T> select(T t){
-        return this.service.select(t);
+        return getService().select(t);
     }
     public T selectOne(T t){
-        return this.service.selectOne(t);
+        return getService().selectOne(t);
     }
     public T selectByPrimaryKey(Object id){
-        return this.service.selectByPrimaryKey(id);
+        return getService().selectByPrimaryKey(id);
     }
     public List<T> selectAll(){
-        return this.service.selectAll();
+        return getService().selectAll();
     }
-    public List<T> selectByExample(Object object){return this.service.selectByExample(object);}
+    public List<T> selectByExample(Object object){return getService().selectByExample(object);}
     public int selectCount(T t){
-        return this.service.selectCount(t);
+        return getService().selectCount(t);
     }
     public int selectCountByExample(Object object){
-        return this.service.selectCountByExample(object);
+        return getService().selectCountByExample(object);
     }
     // 通用方法  结束
 }
