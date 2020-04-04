@@ -11,6 +11,7 @@ import com.example.demo.system.response.MyException;
 import com.example.demo.system.response.ResponseFormat;
 import com.example.demo.system.service.ImageService;
 import com.example.demo.system.util.Constant;
+import com.example.demo.vo.image.ImageCityVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
@@ -60,20 +61,9 @@ public class ImageController extends IBaseController<Image, ImageService> {
         return success(getService().selectByPrimaryKey(id));
     }
 
-//    @PostMapping("/getCity")
-//    @ApiOperation(value = "获取城市")
-////    @ApiImplicitParams({
-////            @ApiImplicitParam(name = Constant.userId, value = "用户id"),
-////            @ApiImplicitParam(name = Constant.province, value = "省份"),
-////            @ApiImplicitParam(name = Constant.city, value ="城市"),
-////            @ApiImplicitParam(name = Constant.county, value = "县")
-////    })
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = Constant.userId, value = "用户id")
-//    })
     @PostMapping("/getCity")
     @ApiOperation(value = "编辑图片")
-    public GenericResponse getCity(@RequestBody Image image) {
+    public GenericResponse getCity(@RequestBody ImageCityVO image) {
         JSONObject params=JSON.parseObject(JSON.toJSONString(image));
         Example example= getExample();
          Example.Criteria criteria  =example.createCriteria();
