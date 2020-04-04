@@ -7,12 +7,12 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 @WebListener
+@Slf4j
 public class SessionListener implements HttpSessionListener, HttpSessionAttributeListener {
-    private static final Logger log = LoggerFactory.getLogger(SessionListener.class);
 
     public SessionListener() {
     }

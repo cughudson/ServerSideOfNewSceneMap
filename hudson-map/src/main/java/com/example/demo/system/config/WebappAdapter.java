@@ -13,7 +13,8 @@ public class WebappAdapter implements WebMvcConfigurer {
 
     public void addInterceptors(InterceptorRegistry registry) {
         LoginInterceptor loginInterceptor = new LoginInterceptor();
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns(new String[]{"/**"}).excludePathPatterns(loginInterceptor.getUrl());
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns(new String[]{"/**"})
+              .excludePathPatterns(loginInterceptor.getUrl());
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 

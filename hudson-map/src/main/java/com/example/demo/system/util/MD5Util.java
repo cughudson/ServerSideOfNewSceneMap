@@ -26,7 +26,7 @@ public class MD5Util {
     public static String getMd5(byte[] bytes){
         return DigestUtils.md5DigestAsHex(bytes);
     }
-    public static String getMD5(File file) throws IOException {
+    public static String getMd5(File file) throws IOException {
         return DigestUtils.md5DigestAsHex(new FileInputStream(file));
     }
 }

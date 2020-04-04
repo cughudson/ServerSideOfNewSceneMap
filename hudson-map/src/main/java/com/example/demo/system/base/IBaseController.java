@@ -4,14 +4,11 @@ import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.response.MyException;
 import com.example.demo.system.response.ResponseFormat;
-import com.example.demo.system.util.MyMapper;
+import com.example.demo.system.util.GenericsUtil;
 import com.example.demo.system.util.SpringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import tk.mybatis.mapper.entity.Example;
 
-import javax.annotation.Resource;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 
 public abstract class IBaseController<T,M>  extends  BaseController{
@@ -19,20 +16,14 @@ public abstract class IBaseController<T,M>  extends  BaseController{
 
     public BaseService<T> getService(){
         if(service ==null){
-            Type superClass = getClass().getGenericSuperclass();
-            Type type = ((ParameterizedType) superClass).getActualTypeArguments()[1];
-            Class<M> classType;
-            if (type instanceof ParameterizedType) {
-                classType = (Class<M>) ((ParameterizedType) type).getRawType();
-            } else {
-                classType = (Class<M>) type;
-            }
-            this.service = (BaseService) SpringUtil.getBean(classType);
+            this.service = (BaseService) SpringUtil.getBean(GenericsUtil.getClassType(this.getClass(),1));
         }
         return service;
     }
 
-
+    public Example getExample() {
+        return getService().getExample();
+    }
 //    @GetMapping("selectById")
     public GenericResponse selectById(Integer id){
         T t=selectByPrimaryKey(id);

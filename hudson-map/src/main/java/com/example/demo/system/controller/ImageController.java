@@ -10,13 +10,11 @@ import com.example.demo.system.service.ImageService;
 import com.example.demo.system.util.Constant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
@@ -66,14 +64,20 @@ public class ImageController extends IBaseController<Image, ImageService> {
             @ApiImplicitParam(name = Constant.pageNum, value = "页码", defaultValue = "1", dataType = "int"),
             @ApiImplicitParam(name = Constant.pageSize, value = "每页大小",defaultValue = "10", dataType = "int"),
             @ApiImplicitParam(name = Constant.delete, value = "删除状态", dataType = "Boolean"),
+
     })
     public GenericResponse list(int pageNum,int pageSize,Boolean delete){
         Image image=Image.builder().delete(delete).build();
         PageHelper.startPage(pageNum,pageSize);
-        List list=getService().select(image);
+        Example example=getExample();
+        example.createCriteria().andEqualTo(Constant.delete,delete);
+//        List list=getService().select(image);
+        List list=getService().selectByExample(example);
         PageInfo pageInfo=new PageInfo(list);
         return success(pageInfo);
     }
+
+
 
     public void checkPermission(String id){
         Image tmp=getService().selectByPrimaryKey(id);

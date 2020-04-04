@@ -1,13 +1,12 @@
 package com.example.demo.system.base;
 
 import com.example.demo.system.mapper.CommonMapper;
+import com.example.demo.system.util.GenericsUtil;
 import com.example.demo.system.util.MyMapper;
 import com.example.demo.system.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 public abstract class BaseServiceImpl<T,M> implements  BaseService<T> {
 
@@ -19,18 +18,14 @@ public abstract class BaseServiceImpl<T,M> implements  BaseService<T> {
 
    public MyMapper<T> mapper(){
        if(mapper ==null){
-           Type superClass = getClass().getGenericSuperclass();
-           Type type = ((ParameterizedType) superClass).getActualTypeArguments()[1];
-           Class<M> classType;
-           if (type instanceof ParameterizedType) {
-               classType = (Class<M>) ((ParameterizedType) type).getRawType();
-           } else {
-               classType = (Class<M>) type;
-           }
-           this.mapper = (MyMapper) SpringUtil.getBean(classType);
+           this.mapper = (MyMapper) SpringUtil.getBean(GenericsUtil.getClassType(this.getClass(),1));
        }
        return mapper;
    }
+    public Example getExample() {
+        return new Example(GenericsUtil.getClassType(this.getClass(),0));
+    }
+
 
     //增
     public int insert(T t) {

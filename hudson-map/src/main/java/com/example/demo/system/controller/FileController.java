@@ -3,7 +3,10 @@ package com.example.demo.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.system.base.BaseController;
+import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
+import com.example.demo.system.response.MyException;
+import com.example.demo.system.response.ResponseFormat;
 import com.example.demo.system.util.MD5Util;
 import com.example.demo.system.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,9 @@ public class FileController extends BaseController {
 
     @PostMapping(value = "/upload")
     public GenericResponse upload(MultipartFile file) throws IOException {
+        if(file==null){
+            throw new MyException(ResponseFormat.error(ErrorCode.PARAM_ERROR,"文件不能为空"));
+        }
         try {
             Calendar cal = Calendar.getInstance();
             Integer year = cal.get(Calendar.YEAR);
@@ -42,11 +48,14 @@ public class FileController extends BaseController {
 
             //写入目的文件
             String destFileName = UUID.randomUUID().toString().replaceAll("-", "") + suffix;
-            file.transferTo(new File(destPath + destFileName));
+            destFileName=MD5Util.getMd5(file.getBytes())+suffix;
+            File newFile=new File(destPath + destFileName);
+            file.transferTo(newFile);
             JSONObject result=new JSONObject();
-            result.put("url",destUrl + destFileName);
+
+            result.put("url",imgFolder+destUrl+destFileName);
             result.put("originalFilename",file.getOriginalFilename());
-            result.put("id", MD5Util.getMD5(new File(destPath + destFileName)));
+            result.put("id",MD5Util.getMd5(newFile));
             request.getSession().removeAttribute("upload_percent_"+getId());
             return success(result);
         }catch (Exception e){

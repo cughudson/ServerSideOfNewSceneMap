@@ -8,6 +8,8 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.multipart.MultipartResolver;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import tk.mybatis.spring.annotation.MapperScan;
@@ -55,5 +57,14 @@ public class DemoApplication {
         return new CustomMultipartResolver();
     }
 
+//    @Bean
+//    public DefaultCookieSerializer httpSessionIdResolver() {
+//        DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
+//        cookieSerializer.setSameSite("NONE");// 取消仅限同一站点设置
+//        cookieSerializer.setUseHttpOnlyCookie(false);
+////        cookieSerializer.setUseSecureCookie(true);
+//        cookieSerializer.setCookieName("jsid");
+//        return cookieSerializer;
+//    }
 }
 

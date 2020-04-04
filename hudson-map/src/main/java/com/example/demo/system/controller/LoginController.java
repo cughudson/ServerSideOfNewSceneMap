@@ -15,11 +15,12 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.UUID;
 
@@ -53,7 +54,8 @@ public class LoginController extends BaseController {
             @ApiImplicitParam(name = Constant.password, value = "密码"),
             @ApiImplicitParam(name = Constant.token, value = Constant.token)
     })
-    public GenericResponse login(HttpServletRequest request, String username, String password, String token) {
+    public GenericResponse login(@CookieValue(value = "JSESSIONID",required = false) String JSESSIONID, HttpServletRequest request, String username, String password, String token, HttpServletResponse response) {
+
         String result = null;
         User user = null;
         int type = 0;
@@ -85,21 +87,21 @@ public class LoginController extends BaseController {
                     return error(ErrorCode.USER_PWD_ERROR, result);
                 }
             }
-            GenericResponse response = loginSuccess(user);
-            result = response.getMessage();
+            GenericResponse genericResponse = loginSuccess(user);
+            result = genericResponse.getMessage();
             if (!StringUtils.isEmpty(token) && Constant.tokens.containsKey(token)) {
                 result += Constant.tokens.get(token).toJSONString();
                 Constant.tokens.remove(token);
             }
-            if(response.getCode()== ErrorCode.SUCCESS){
+            if(genericResponse.getCode()== ErrorCode.SUCCESS){
                 JSONObject responseResult=new JSONObject();
                 User current=getUser();
                 current.setPassword(null);
                 responseResult.put("user",current);
                 responseResult.put("other","忘了，要看記錄");
-                response= success(responseResult);
+                genericResponse= success(responseResult);
             }
-            return response;
+            return genericResponse;
         } finally {
             Long userId = null;
             if (user != null) {

@@ -28,6 +28,11 @@ public class LoginInterceptor implements HandlerInterceptor {
     }
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+//        if(getUrl().contains(request.getRequestURI())){
+//            return true;
+//        }
+
         logger.info(request.getRequestURI()+"\t"+request.getRequestURL());
         HttpSession session = request.getSession();
         UserExt user= (UserExt) session.getAttribute(Constant.user);

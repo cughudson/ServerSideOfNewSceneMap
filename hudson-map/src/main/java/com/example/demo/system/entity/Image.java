@@ -27,6 +27,8 @@ public class Image implements Serializable {
     private String id;
     @ApiModelProperty("文件名称")
     private String filename;//文件名称
+    @ApiModelProperty("图片路径")
+    private String url;//图片路径
     @ApiModelProperty("拍摄设备")
     private String model;//拍摄设备
     @ApiModelProperty("文件创立时间")

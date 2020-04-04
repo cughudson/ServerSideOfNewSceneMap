@@ -173,6 +173,7 @@ public abstract class BaseController {
     @Value("${img-save-path}")
     public String savePath;
 
+    public String imgFolder="/image_folder";
     public String like(String name) {
         return "%"+name+"%";
     }

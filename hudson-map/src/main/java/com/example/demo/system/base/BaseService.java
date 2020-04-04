@@ -1,5 +1,7 @@
 package com.example.demo.system.base;
 
+import tk.mybatis.mapper.entity.Example;
+
 import java.util.List;
 
 public interface BaseService<T> {
@@ -21,4 +23,6 @@ public interface BaseService<T> {
     List<T> selectByExample(Object object);
     int selectCount(T t);
     int selectCountByExample(Object object);
+
+    Example getExample();
 }

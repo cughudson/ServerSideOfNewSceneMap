@@ -62,7 +62,6 @@ public class UserController extends BaseController {
                 .extra(extra)
                 .build();
         userService.insert(user);
-//        user.clearPassword();
         user.setPassword(null);
         return success(user);
 
