@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.UUID;
 
@@ -54,7 +53,7 @@ public class LoginController extends BaseController {
             @ApiImplicitParam(name = Constant.password, value = "密码"),
             @ApiImplicitParam(name = Constant.token, value = Constant.token)
     })
-    public GenericResponse login(@CookieValue(value = "JSESSIONID",required = false) String JSESSIONID, HttpServletRequest request, String username, String password, String token, HttpServletResponse response) {
+    public GenericResponse login( HttpServletRequest request, String username, String password, String token) {
 
         String result = null;
         User user = null;

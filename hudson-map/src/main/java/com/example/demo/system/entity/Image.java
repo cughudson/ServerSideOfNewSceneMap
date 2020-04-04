@@ -2,6 +2,8 @@ package com.example.demo.system.entity;
 
 import java.util.Date;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -32,6 +34,7 @@ public class Image implements Serializable {
     @ApiModelProperty("拍摄设备")
     private String model;//拍摄设备
     @ApiModelProperty("文件创立时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date fileCreateTime;//文件创立时间
     @ApiModelProperty("光圈")
     private String aperture;//光圈
@@ -63,5 +66,6 @@ public class Image implements Serializable {
     @Column(name = "`delete`")
     private Boolean delete;//是否删除
     @ApiModelProperty("生成时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;//生成时间
 }

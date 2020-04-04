@@ -1,6 +1,7 @@
 
 package com.example.demo.system.config;
 
+import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.response.MyException;
 import com.example.demo.system.response.ResponseFormat;
@@ -32,6 +33,6 @@ public class GlobalExceptionHandler {
             return null;
         }
         logger.error("未知异常！原因是:", e);
-        return ResponseFormat.error(10000, e.getMessage(), e);
+        return ResponseFormat.error(ErrorCode.UNKNOWN_ERROR, e.getMessage(), e);
     }
 }
