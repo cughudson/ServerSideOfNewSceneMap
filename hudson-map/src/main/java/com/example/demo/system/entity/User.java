@@ -27,7 +27,9 @@ public class User implements Serializable {
     private Long id;
     
     private String username;//用户名
-    
+
+    private String name;
+
     private String password;//密码
     
     private Boolean admin;//是否为管理员

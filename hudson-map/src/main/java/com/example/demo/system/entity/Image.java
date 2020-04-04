@@ -52,12 +52,12 @@ public class Image implements Serializable {
     private String blat;//高德地图 latitude
     @ApiModelProperty("高德地图 lngitude")
     private String blng;//高德地图 lngitude
-    @ApiModelProperty("拍摄地所在国家")
-    private String country;//拍摄地所在国家
-    @ApiModelProperty("拍摄地所在地级市")
-    private String city;//拍摄地所在地级市
     @ApiModelProperty("拍摄地所在省份")
     private String province;//拍摄地所在省份
+    @ApiModelProperty("拍摄地所在地级市")
+    private String city;//拍摄地所在地级市
+    @ApiModelProperty("拍摄地所在县")
+    private String county;//拍摄地所在县
     @ApiModelProperty("上传人的名字")
     private String uploader;//上传人的名字
     @ApiModelProperty("上传人的id")

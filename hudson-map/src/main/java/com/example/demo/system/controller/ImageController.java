@@ -1,5 +1,8 @@
 package com.example.demo.system.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.system.base.IBaseController;
 import com.example.demo.system.entity.Image;
 import com.example.demo.system.response.ErrorCode;
@@ -55,6 +58,48 @@ public class ImageController extends IBaseController<Image, ImageService> {
         Image image=Image.builder().id(id).delete(delete).build();
         getService().updateByPrimaryKeySelective(image);
         return success(getService().selectByPrimaryKey(id));
+    }
+
+//    @PostMapping("/getCity")
+//    @ApiOperation(value = "获取城市")
+////    @ApiImplicitParams({
+////            @ApiImplicitParam(name = Constant.userId, value = "用户id"),
+////            @ApiImplicitParam(name = Constant.province, value = "省份"),
+////            @ApiImplicitParam(name = Constant.city, value ="城市"),
+////            @ApiImplicitParam(name = Constant.county, value = "县")
+////    })
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = Constant.userId, value = "用户id")
+//    })
+    @PostMapping("/getCity")
+    @ApiOperation(value = "编辑图片")
+    public GenericResponse getCity(@RequestBody Image image) {
+        JSONObject params=JSON.parseObject(JSON.toJSONString(image));
+        Example example= getExample();
+         Example.Criteria criteria  =example.createCriteria();
+         String userId=Constant.userId;
+         if(params.containsKey(userId)){
+            criteria.andEqualTo(userId,params.get(userId));
+         }
+        if(!getUser().getAdmin()){
+            criteria.andEqualTo(userId,getUser().getId());
+        }
+        String province=Constant.province;
+        String city=Constant.city;
+        String county=Constant.county;
+
+        checkAndAdd(params, criteria, province);
+        checkAndAdd(params, criteria, city);
+        checkAndAdd(params, criteria, county);
+        example.selectProperties(province,city,county);
+        example.setDistinct(true);
+        return success( JSONArray.parseArray(JSON.toJSONString(getService().selectByExample(example))));
+    }
+
+    private void checkAndAdd(@RequestBody JSONObject params, Example.Criteria criteria, String attribute) {
+        if (params.containsKey(attribute)) {
+            criteria.andEqualTo(attribute, params.get(attribute));
+        }
     }
 
 

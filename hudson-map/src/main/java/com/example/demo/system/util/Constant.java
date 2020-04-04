@@ -16,6 +16,10 @@ public class Constant {
     public static Map<String,JSONObject> tokens=Maps.newHashMap();
     public static final String accept_message="审核状态  0待审核  1审核通过  2审核失败  3重提待审核  4(待审核和重提待审核)";
     public static final String admin ="admin";
+    public static final String county="county";
+    public static final String province="province";
+    public static final String city="city";
+
     private static Logger logger = LoggerFactory.getLogger(Constant.class);
     public static Random random = new Random();
     public static final String user = "user";
