@@ -117,10 +117,10 @@ public class UserController extends BaseController {
             }
             user.setUsername(username);
         }
-        if(!StringUtil.isNotEmpty(name)){
+        if(StringUtil.isNotEmpty(name)){
            user.setName(name);
         }
-        if(!StringUtil.isNotEmpty(extra)){
+        if(StringUtil.isNotEmpty(extra)){
             user.setExtra(extra);
         }
         userService.update(user);
