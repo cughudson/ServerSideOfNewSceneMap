@@ -36,10 +36,11 @@ public class UserController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = Constant.username, value = "用户名", dataType = "String", required = true),
             @ApiImplicitParam(name = Constant.password, value = "密码", dataType = "String"),
+            @ApiImplicitParam(name = Constant.name, value = "name", dataType = "String"),
             @ApiImplicitParam(name = Constant.headImg, value = "头像地址"),
             @ApiImplicitParam(name = "extra", value = "拓展"),
     })
-    public GenericResponse insert(@RequestParam String username, String password, String headImg, String extra) throws MyException {
+    public GenericResponse insert(@RequestParam String username, String password, String name,String headImg, String extra) throws MyException {
         if(! getUser().getAdmin()){
             throw new MyException(error(ErrorCode.PERMISSION_DENIED, "无权限的操作"));
         }
@@ -55,6 +56,7 @@ public class UserController extends BaseController {
                 .password(password)
                 .admin(false)
                 .del(false)
+                .name(name)
                 .enable(true)
                 .createTime(new Date())
                 .updateTime(new Date())
