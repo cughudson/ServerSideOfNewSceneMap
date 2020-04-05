@@ -17,6 +17,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.entity.Example;
 
@@ -101,7 +102,9 @@ public class ImageController extends IBaseController<Image, ImageService> {
             @ApiImplicitParam(name = Constant.delete, value = "删除状态", dataType = "Boolean"),
 
     })
-    public GenericResponse list(int pageNum,int pageSize,Boolean delete){
+    public GenericResponse list(@RequestParam(name = "pageNum", required = false,defaultValue = "1") Integer pageNum,
+                                @RequestParam(name = "pageSize",required = false,defaultValue = Constant.defaultValue)Integer pageSize,
+                                Boolean delete){
 //        Image image=Image.builder().delete(delete).build();
         PageHelper.startPage(pageNum,pageSize);
         Example example=getExample();

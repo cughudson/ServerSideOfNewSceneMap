@@ -36,7 +36,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         logger.info(request.getRequestURI()+"\t"+request.getRequestURL());
         HttpSession session = request.getSession();
         UserExt user= (UserExt) session.getAttribute(Constant.user);
-        int time=request.getSession().getMaxInactiveInterval();
+//        int time=request.getSession().getMaxInactiveInterval();
 //		logger.info(time+":loginCheck:::"+request.getSession().getId());
         boolean otherLogin=false;
         if( user!= null){
@@ -83,12 +83,13 @@ public class LoginInterceptor implements HandlerInterceptor {
         return false;
     }
 
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        logger.info("postHandle:" + request.getRequestURL());
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
+//        String requestId=request.getHeader("id");
+//        logger.info("postHandle:" + request.getRequestURL() );
     }
 
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        logger.info("afterCompletion:" + request.getRequestURL());
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)  {
+//        logger.info("afterCompletion:" + request.getRequestURL() );
     }
 
     public void initUrl() {
@@ -125,8 +126,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         return url;
     }
 
-    public void reloadUrl() {
-        url.clear();
-        this.getUrl();
-    }
+//    public void reloadUrl() {
+//        url.clear();
+//        this.getUrl();
+//    }
 }
