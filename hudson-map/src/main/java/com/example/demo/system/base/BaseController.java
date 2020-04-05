@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.alibaba.fastjson.JSON;
 import com.example.demo.system.entity.ext.UserExt;
 import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
@@ -180,6 +181,10 @@ public abstract class BaseController {
 
     public UserExt getUser() {
         return (UserExt) request.getSession().getAttribute(Constant.user);
+    }
+    public JSONObject getOutUser() {
+        UserExt user= (UserExt) request.getSession().getAttribute(Constant.user);
+        return JSON.parseObject(JSON.toJSONString(user)).fluentRemove(Constant.password);
     }
 
     public JSONObject getLoginRecord(String ip,Long userId, int type,String result, String username) {

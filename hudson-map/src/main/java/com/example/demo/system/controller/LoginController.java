@@ -93,9 +93,7 @@ public class LoginController extends BaseController {
             }
             if(genericResponse.getCode()== ErrorCode.SUCCESS){
                 JSONObject responseResult=new JSONObject();
-                User current=getUser();
-                current.setPassword(null);
-                responseResult.put("user",current);
+                responseResult.put("user",getOutUser());
                 responseResult.put("other","忘了，要看記錄");
                 genericResponse= success(responseResult);
             }

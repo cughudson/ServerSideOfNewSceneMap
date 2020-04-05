@@ -146,7 +146,7 @@ public class UserController extends BaseController {
         if (newpwd.equals(oldpwd)) {
             return error(ErrorCode.PARAM_ERROR, "新旧密码不能相同");
         }
-        User user = getUser();
+        User user =userService.selectByPrimaryKey(getUser().getId());
         if (user.getPassword().equals(MD5Util.getPassword( oldpwd))) {
             user.setPassword(MD5Util.getPassword(newpwd));
             userService.update(user);
@@ -184,7 +184,7 @@ public class UserController extends BaseController {
     @PostMapping("/user")
     @ApiOperation(value = "当前登录用户信息")
     public GenericResponse user() {
-        return success(getUser());
+        return success(getOutUser());
     }
 
     @ApiOperation(value = "获取token")
