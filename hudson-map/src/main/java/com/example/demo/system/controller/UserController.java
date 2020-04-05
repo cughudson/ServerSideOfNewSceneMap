@@ -9,6 +9,8 @@ import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.response.MyException;
 import com.example.demo.system.util.Constant;
 import com.example.demo.system.util.MD5Util;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.util.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -91,6 +93,27 @@ public class UserController extends BaseController {
             data.parallelStream().forEach(a -> a.setPassword(null));
         }
         return success(data);
+    }
+
+    @PostMapping("/list/page")
+    @ApiOperation("查询用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = Constant.pageNum, value = "页码", defaultValue = "1", dataType = "int"),
+            @ApiImplicitParam(name = Constant.pageSize, value = "每页大小",defaultValue = Constant.defaultValue, dataType = "int"),
+            @ApiImplicitParam(name = Constant.username, value = "名称"),
+            @ApiImplicitParam(name = Constant.useable, value = "能否登陆", dataType = "boolean"),
+            @ApiImplicitParam(name = Constant.del, value = "删除状态", dataType = "boolean"),
+            @ApiImplicitParam(name = Constant.admin, value = "是否为管理员", dataType = "boolean"),
+    })
+    public GenericResponse listPage(int pageNum,int pageSize,String username, Boolean useable, Boolean del,Boolean admin) {
+        PageHelper.startPage(pageNum,pageSize);
+        User user = getUser();
+        List<User> data = new ArrayList<>();
+        if (user.getAdmin()) {
+            data = userService.list(user,username, useable, del,admin);
+            data.parallelStream().forEach(a -> a.setPassword(null));
+        }
+        return success(new PageInfo<>(data));
     }
 
     @PostMapping("/update")

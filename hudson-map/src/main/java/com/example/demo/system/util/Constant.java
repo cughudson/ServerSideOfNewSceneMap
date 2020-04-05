@@ -19,6 +19,7 @@ public class Constant {
     public static final String county="county";
     public static final String province="province";
     public static final String city="city";
+    public static final String defaultValue="10";
 
     private static Logger logger = LoggerFactory.getLogger(Constant.class);
     public static Random random = new Random();

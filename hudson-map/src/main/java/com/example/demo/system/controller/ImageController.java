@@ -97,12 +97,12 @@ public class ImageController extends IBaseController<Image, ImageService> {
     @ApiOperation(value = "查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = Constant.pageNum, value = "页码", defaultValue = "1", dataType = "int"),
-            @ApiImplicitParam(name = Constant.pageSize, value = "每页大小",defaultValue = "10", dataType = "int"),
+            @ApiImplicitParam(name = Constant.pageSize, value = "每页大小",defaultValue = Constant.defaultValue, dataType = "int"),
             @ApiImplicitParam(name = Constant.delete, value = "删除状态", dataType = "Boolean"),
 
     })
     public GenericResponse list(int pageNum,int pageSize,Boolean delete){
-        Image image=Image.builder().delete(delete).build();
+//        Image image=Image.builder().delete(delete).build();
         PageHelper.startPage(pageNum,pageSize);
         Example example=getExample();
         example.createCriteria().andEqualTo(Constant.delete,delete);
