@@ -96,9 +96,10 @@ public class UserController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = Constant.id, value = "用户id", required = true, dataType = "int"),
             @ApiImplicitParam(name = Constant.username, value = "用户名", required = true),
+            @ApiImplicitParam(name = Constant.name, value = "name"),
             @ApiImplicitParam(name = Constant.extra, value = "拓展"),
     })
-    public GenericResponse update(@RequestParam Long id, @RequestParam String username,String extra) {
+    public GenericResponse update(@RequestParam Long id, @RequestParam String username,String name,String extra) {
 
         if (id.intValue()!=getUser().getId().intValue() && ! getUser().getAdmin() ) {
             throw new MyException(error(ErrorCode.PERMISSION_DENIED, "无权限的操作"));
@@ -114,8 +115,11 @@ public class UserController extends BaseController {
             }
             user.setUsername(username);
         }
+        if(!StringUtil.isNotEmpty(name)){
+           user.setName(name);
+        }
         if(!StringUtil.isNotEmpty(extra)){
-           user.setExtra(extra);
+            user.setExtra(extra);
         }
         userService.update(user);
         return success(user);
