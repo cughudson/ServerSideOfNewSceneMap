@@ -105,7 +105,8 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = Constant.del, value = "删除状态", dataType = "boolean"),
             @ApiImplicitParam(name = Constant.admin, value = "是否为管理员", dataType = "boolean"),
     })
-    public GenericResponse listPage(int pageNum,int pageSize,String username, Boolean useable, Boolean del,Boolean admin) {
+    public GenericResponse listPage(@RequestParam(name = "pageNum", required = false,defaultValue = "1") Integer pageNum,
+                                    @RequestParam(name = "pageSize",required = false,defaultValue = Constant.defaultValue)Integer pageSize,String username, Boolean useable, Boolean del,Boolean admin) {
         PageHelper.startPage(pageNum,pageSize);
         User user = getUser();
         List<User> data = new ArrayList<>();
