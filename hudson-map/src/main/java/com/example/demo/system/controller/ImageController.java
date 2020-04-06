@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.system.base.IBaseController;
 import com.example.demo.system.entity.Image;
+import com.example.demo.system.entity.User;
 import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.response.MyException;
@@ -69,9 +70,9 @@ public class ImageController extends IBaseController<Image, ImageService> {
     @PostMapping("users")
     @ApiOperation(value = "获取用户")
     public GenericResponse users() {
-//        checkPermission(image.getId());
-//        return success(getService().updateByPrimaryKeySelective(image));
-        return success(imageService.selectUsers());
+        List<User> users=imageService.selectUsers();
+        users.forEach(u->u.setPassword(null));
+        return success(users);
     }
     @PostMapping("delete")
     @ApiOperation(value = "变更删除状态")

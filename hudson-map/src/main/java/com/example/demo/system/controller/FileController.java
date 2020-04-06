@@ -35,10 +35,11 @@ public class FileController extends BaseController {
             Integer month = cal.get(Calendar.MONTH)+1;
             Integer day = cal.get(Calendar.DAY_OF_MONTH);
 
-            String destPath = savePath + File.separator + year + File.separator + month + File.separator + day + File.separator;
-            String destUrl =  "/" + year + "/" + month + "/" + day + "/";
-            destUrl="/";
-
+//            String destPath = savePath ;//+ File.separator + year + File.separator + month + File.separator + day + File.separator;
+//            String destUrl =  "/" + year + "/" + month + "/" + day + "/";
+//
+            String destPath=savePath+"/image_folder/";
+            String destUrl="/";
             logger.info("目标路径："+destPath);
             File destFile = new File(destPath);
             if(!destFile.exists()){
