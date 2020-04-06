@@ -24,7 +24,8 @@ import java.util.Random;
 public class UserServiceImpl  extends BaseServiceImpl<User,UserMapper> implements UserService {
 
     private static Random random = new Random();
-
+    @Autowired
+    private UserMapper mapper;
     @Override
     public User findByName(String username) {
         Example example = new Example(User.class);

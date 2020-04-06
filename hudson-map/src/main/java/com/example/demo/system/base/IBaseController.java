@@ -45,7 +45,7 @@ public abstract class IBaseController<T,M>  extends  BaseController{
     }
 
     // 通用方法  开始
-    public T checkIdAndGet(Integer id) {
+    public T checkIdAndGet(Object id) {
         T t=selectByPrimaryKey(id);
         if(t==null){
             throw new MyException(ResponseFormat.error(ErrorCode.DATA_NOT_EXISTS,"数据不存在"));

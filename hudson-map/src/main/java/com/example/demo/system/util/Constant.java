@@ -20,6 +20,8 @@ public class Constant {
     public static final String province="province";
     public static final String city="city";
     public static final String defaultValue="10";
+    public static final String blat="blat";
+    public static final String blng="blng";
 
     private static Logger logger = LoggerFactory.getLogger(Constant.class);
     public static Random random = new Random();

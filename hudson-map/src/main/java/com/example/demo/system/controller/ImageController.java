@@ -11,14 +11,14 @@ import com.example.demo.system.response.MyException;
 import com.example.demo.system.response.ResponseFormat;
 import com.example.demo.system.service.ImageService;
 import com.example.demo.system.util.Constant;
+import com.example.demo.vo.image.IdVO;
+import com.example.demo.vo.image.ImageBoundVO;
 import com.example.demo.vo.image.ImageCityVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
@@ -26,7 +26,32 @@ import java.util.List;
 
 @Api(tags = {"图片"})
 @RestController
+@RequestMapping("/image")
 public class ImageController extends IBaseController<Image, ImageService> {
+
+    @Autowired
+    ImageService imageService;
+//
+//
+///image/bounds
+//    {
+//        userId:可空
+//        bounds:Object {ws:[lng,lat],en:[lng,lat]} require
+//        num:require (返回的数量)
+//    }
+///image/id
+    @PostMapping("/image/bounds")
+    @ApiOperation(value = "根据指定范围查找图片")
+    public GenericResponse bounds(@RequestBody ImageBoundVO boundVO){
+        PageHelper.startPage(1,boundVO.getNumber());
+        return success(imageService.bounds(boundVO));
+    }
+
+    @PostMapping("/image/id")
+    @ApiOperation(value = "查找")
+    public GenericResponse id(@RequestBody IdVO id){
+        return success(checkIdAndGet(id.getId()));
+    }
 
     @PostMapping("/insert")
     @ApiOperation(value = "新增图片")

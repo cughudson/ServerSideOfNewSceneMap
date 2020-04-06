@@ -1,5 +1,6 @@
 package com.example.demo.system.base;
 
+import com.example.demo.vo.image.ImageBoundVO;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -25,4 +26,5 @@ public interface BaseService<T> {
     int selectCountByExample(Object object);
 
     Example getExample();
+
 }

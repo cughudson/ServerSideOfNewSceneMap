@@ -11,12 +11,12 @@ import java.util.List;
 public abstract class BaseServiceImpl<T,M> implements  BaseService<T> {
 
     @Autowired
-   public MyMapper<T> mapper;
+   private MyMapper<T> mapper;
 
     @Autowired
     private CommonMapper commonMapper;
 
-   public MyMapper<T> mapper(){
+   public MyMapper<T> getMapper(){
        if(mapper ==null){
            this.mapper = (MyMapper) SpringUtil.getBean(GenericsUtil.getClassType(this.getClass(),1));
        }
