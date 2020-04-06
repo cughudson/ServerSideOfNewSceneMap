@@ -97,7 +97,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         url.add("/css/**");
         url.add("/static/js/**");
         url.add("/js/**");
-
+        url.add("/image_folder/**");
         url.add("/lib/**");
         url.add("/fonts/**");
         url.add("/icon/**");
