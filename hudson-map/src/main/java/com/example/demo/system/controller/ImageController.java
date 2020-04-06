@@ -30,16 +30,8 @@ import java.util.List;
 public class ImageController extends IBaseController<Image, ImageService> {
 
     @Autowired
-    ImageService imageService;
-//
-//
-///image/bounds
-//    {
-//        userId:可空
-//        bounds:Object {ws:[lng,lat],en:[lng,lat]} require
-//        num:require (返回的数量)
-//    }
-///image/id
+    private ImageService imageService;
+
     @PostMapping("/image/bounds")
     @ApiOperation(value = "根据指定范围查找图片")
     public GenericResponse bounds(@RequestBody ImageBoundVO boundVO){
@@ -74,6 +66,13 @@ public class ImageController extends IBaseController<Image, ImageService> {
         return success(getService().updateByPrimaryKeySelective(image));
     }
 
+    @PostMapping("users")
+    @ApiOperation(value = "获取用户")
+    public GenericResponse users() {
+//        checkPermission(image.getId());
+//        return success(getService().updateByPrimaryKeySelective(image));
+        return success(imageService.selectUsers());
+    }
     @PostMapping("delete")
     @ApiOperation(value = "变更删除状态")
     @ApiImplicitParams({

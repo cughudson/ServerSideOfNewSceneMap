@@ -9,12 +9,16 @@ import com.example.demo.system.response.MyException;
 import com.example.demo.system.response.ResponseFormat;
 import com.example.demo.system.util.MD5Util;
 import com.example.demo.system.util.StringUtils;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 @RestController
@@ -33,6 +37,7 @@ public class FileController extends BaseController {
 
             String destPath = savePath + File.separator + year + File.separator + month + File.separator + day + File.separator;
             String destUrl =  "/" + year + "/" + month + "/" + day + "/";
+            destUrl="/";
 
             logger.info("目标路径："+destPath);
             File destFile = new File(destPath);
@@ -50,9 +55,26 @@ public class FileController extends BaseController {
             String destFileName = UUID.randomUUID().toString().replaceAll("-", "") + suffix;
             destFileName=MD5Util.getMd5(file.getBytes())+suffix;
             File newFile=new File(destPath + destFileName);
+            if(newFile.exists()){
+                throw new MyException(ResponseFormat.error(ErrorCode.DATA_EXISTS,"已经存在相同的文件"));
+            }
             file.transferTo(newFile);
             JSONObject result=new JSONObject();
 
+            try {
+                BufferedImage srcImage = ImageIO.read(newFile); // 获取源文件的宽高
+                int s_height = srcImage.getHeight();
+                int s_width = srcImage.getWidth();
+                if(s_width>500){
+                    int height=new BigDecimal(s_height).divide(new BigDecimal(s_width).divide(new BigDecimal(500))).intValue();
+                    File outFilePath=new File(destPath +"thumbnail_"+ destFileName);
+//                    System.out.println(outFilePath.getAbsolutePath());
+                    Thumbnails.of(newFile).size(500,height).toFile(outFilePath);//这里不通过压缩比来计算 高度 是因为图片没有严格的长宽比，计算出来的会有个1个像素点的误差
+//                    result.put("url",imgFolder+destUrl+"thumbnail_"+destFileName);
+                    result.put("thumbnail_url",imgFolder+destUrl+"thumbnail_"+destFileName);
+                }
+            } catch (IOException e) {
+            }
             result.put("url",imgFolder+destUrl+destFileName);
             result.put("originalFilename",file.getOriginalFilename());
             result.put("id",MD5Util.getMd5(newFile));

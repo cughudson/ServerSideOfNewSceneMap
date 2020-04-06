@@ -18,11 +18,11 @@ public class ImageBoundVO {
     @ApiModelProperty(required = true)
     private Bounds  bounds;
 
-//    bounds:Object {ws:[lng,lat],en:[lng,lat]} require
-//    num:require (返回的数量)
     @ApiModelProperty(value = "返回的数量",required = true)
     private Integer number;
 
+    @ApiModelProperty(value = "del 状态")
+    private Boolean del;
     @Data
     public static class Bounds{
         @ApiModelProperty(value = "ws",required = true)

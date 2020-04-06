@@ -220,9 +220,7 @@ public class UserController extends BaseController {
     @ApiOperation(value = "获取token")
     @PostMapping("/getToken")
     public GenericResponse getToken(){
-//        User user=userService.findById(getUser().getId());  //生成规则  用户id | 截止时间
         Long time=System.currentTimeMillis()/1000;
-//        DesUtil.encode3Des(user.getPassword(),user.getId()+"|"+time) 本来想做加解密 但是没必要
         Long userId= getUser().getId();
         String token= MD5Util.getMd5(userId+"|"+ UUID.randomUUID());
         Long expireTime=time+Constant.tokenExpire;
@@ -239,7 +237,6 @@ public class UserController extends BaseController {
     @ApiOperation(value = "授予管理员")
     @ApiImplicitParam(name = Constant.id, value = "用户id", required = true, dataType = "int")
     public GenericResponse auth(Long id) {
-//        updateUser(new User().setId(id).s(Constant.POWER_normal_admin));
         updateUser(User.builder().id(id).admin(true).build());
         return success();
     }
