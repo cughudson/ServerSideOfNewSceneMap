@@ -66,12 +66,11 @@ public class FileController extends BaseController {
                 BufferedImage srcImage = ImageIO.read(newFile); // 获取源文件的宽高
                 int s_height = srcImage.getHeight();
                 int s_width = srcImage.getWidth();
-                if(s_width>500){
-                    int height=new BigDecimal(s_height).divide(new BigDecimal(s_width).divide(new BigDecimal(500))).intValue();
+                int maxWidth=300;
+                if(s_width>maxWidth){
+                    int height=new BigDecimal(s_height).divide(new BigDecimal(s_width).divide(new BigDecimal(maxWidth))).intValue();//这里不通过压缩比来计算 高度 是因为图片没有严格的长宽比，计算出来的会有个1个像素点的误差
                     File outFilePath=new File(destPath +"thumbnail_"+ destFileName);
-//                    System.out.println(outFilePath.getAbsolutePath());
-                    Thumbnails.of(newFile).size(500,height).toFile(outFilePath);//这里不通过压缩比来计算 高度 是因为图片没有严格的长宽比，计算出来的会有个1个像素点的误差
-//                    result.put("url",imgFolder+destUrl+"thumbnail_"+destFileName);
+                    Thumbnails.of(newFile).size(maxWidth,height).toFile(outFilePath);
                     result.put("thumbnail_url",imgFolder+destUrl+"thumbnail_"+destFileName);
                 }
             } catch (IOException e) {
