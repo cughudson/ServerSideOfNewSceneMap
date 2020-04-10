@@ -48,6 +48,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 //				 return preHandle(request,response,handler);
                 otherLogin=true;
             }else {
+                if("/".equals(request.getRequestURI())){
+                    response.sendRedirect("/index.html");	//未登录，跳转到登录页
+                }
                 return true;//暂时不管权限
             }
 //			return checkPower(request,response,user);
@@ -78,7 +81,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             //可以使用封装类简写Content-Type，使用该方法则无需使用setCharacterEncoding
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().print(json.toString());
-
         }
         return false;
     }
