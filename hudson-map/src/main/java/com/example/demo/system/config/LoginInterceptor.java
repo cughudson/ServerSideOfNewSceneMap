@@ -50,6 +50,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             }else {
                 if("/".equals(request.getRequestURI())){
                     response.sendRedirect("/index.html");	//未登录，跳转到登录页
+                    return false;
                 }
                 return true;//暂时不管权限
             }
