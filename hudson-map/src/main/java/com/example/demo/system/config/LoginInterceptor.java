@@ -61,7 +61,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             if(otherLogin){
                 response.sendRedirect("/login.html?otherlogin");//其它地方登录
             }else{
-                response.sendRedirect("/index.html");	//未登录，跳转到登录页
+                response.sendRedirect("/login.html");	//未登录，跳转到登录页
             }
         }else{
             JSONObject json=new JSONObject();
