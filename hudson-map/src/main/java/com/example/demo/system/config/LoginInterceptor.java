@@ -59,9 +59,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 //					session.setAttribute("message","请先登录")	;
 //				}
             if(otherLogin){
-                response.sendRedirect("/login?otherlogin");//其它地方登录
+                response.sendRedirect("/index.html?otherlogin");//其它地方登录
             }else{
-                response.sendRedirect("/login");	//未登录，跳转到登录页
+                response.sendRedirect("/index.html");	//未登录，跳转到登录页
             }
         }else{
             JSONObject json=new JSONObject();
