@@ -20,6 +20,7 @@ public class FileUploadProgressListener implements ProgressListener {
     public void setSession(HttpSession session) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String id=request.getHeader("id");
+        log.info("setSession:"+id);
         session.setAttribute("upload_percent_"+id, 0);
         this.session = session;
     }
@@ -34,10 +35,11 @@ public class FileUploadProgressListener implements ProgressListener {
             id=request.getParameter("id");
         }
         session.setAttribute("upload_percent_"+id, percent);
-        long nowTime=new Date().getTime()/3000;
+        String  str=pItems+"更新：upload_percent_"+id+"::"+percent +"\t "+pBytesRead+"/"+pContentLength;
+        log.info(str);
+        long nowTime=new Date().getTime()/1000;
         if(nowTime != time){
             time=nowTime;
-            String  str=pItems+"更新：upload_percent_"+id+"::"+percent +"\t "+pBytesRead+"/"+pContentLength;
             log.info(str+"\t"+time);
         }
     }

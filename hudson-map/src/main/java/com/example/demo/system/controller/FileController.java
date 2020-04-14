@@ -104,7 +104,7 @@ public class FileController extends BaseController {
     @RequestMapping(value = "/uploadStatus")
     public GenericResponse uploadStatus(HttpServletRequest request){
         Object percent = request.getSession().getAttribute("upload_percent_"+getId());
-        System.out.println("uploadStatus : upload_percent_"+getId()+":"+percent);
+        logger.info("uploadStatus : upload_percent_"+getId()+":"+percent);
         return success(null != percent ? (Integer) percent : 0);
     }
 }
