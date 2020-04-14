@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({MyException.class})
     @ResponseBody
     public GenericResponse bizExceptionHandler(MyException my) {
-        logger.error("发生业务异常！原因是：{}", my.getMessage());
+        logger.error("发生业务异常！原因是：{} {}", my.getMessage(),my.getResponse());
         return my.getResponse();
     }
 

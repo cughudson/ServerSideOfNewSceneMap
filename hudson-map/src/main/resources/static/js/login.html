@@ -13,8 +13,7 @@
 </form>
 
 
-
-<input type="hidden" name="username" id="username" value="a">
+<input type="hidden" name="username" id="username" value="zhangxiguan">
 <input type="hidden" name="password" id="password" value="a">
 <input type=button  value="登录" onclick="login()" />
 
@@ -63,12 +62,12 @@ id:$("#id").val()
                 success: function(result){
                     console.log(result);
                     $("html").append(JSON.stringify(result)+"<br>");
-                    if(parseInt(result)==100){
+                    if(parseInt(result)==50){
                         console.log('end ..............');
                     }
                 }
             });
-        },1000);
+        },500);
         return false;
     }
 

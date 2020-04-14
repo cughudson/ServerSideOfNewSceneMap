@@ -40,6 +40,7 @@ public class FileController extends BaseController {
 //
             String destPath=savePath+"/image_folder/";
             String destUrl="/";
+
             logger.info("目标路径："+destPath);
             File destFile = new File(destPath);
             if(!destFile.exists()){
@@ -57,23 +58,28 @@ public class FileController extends BaseController {
             destFileName=MD5Util.getMd5(file.getBytes())+suffix;
             File newFile=new File(destPath + destFileName);
             if(newFile.exists()){
+                 logger.info("已经存在相同的文件:"+destFileName);
                 throw new MyException(ResponseFormat.error(ErrorCode.DATA_EXISTS,"已经存在相同的文件"));
             }
             file.transferTo(newFile);
             JSONObject result=new JSONObject();
-
+            BufferedImage srcImage=null;
             try {
-                BufferedImage srcImage = ImageIO.read(newFile); // 获取源文件的宽高
+                srcImage = ImageIO.read(newFile); // 获取源文件的宽高
                 int s_height = srcImage.getHeight();
                 int s_width = srcImage.getWidth();
                 int maxWidth=300;
                 if(s_width>maxWidth){
-                    int height=new BigDecimal(s_height).divide(new BigDecimal(s_width).divide(new BigDecimal(maxWidth))).intValue();//这里不通过压缩比来计算 高度 是因为图片没有严格的长宽比，计算出来的会有个1个像素点的误差
+                    int height=new BigDecimal(s_height).divide(
+                            new BigDecimal(s_width).divide(new BigDecimal(maxWidth),4,BigDecimal.ROUND_HALF_UP)
+                    ,4,BigDecimal.ROUND_HALF_UP).intValue();//这里不通过压缩比来计算 高度 是因为图片没有严格的长宽比，计算出来的会有个1个像素点的误差
                     File outFilePath=new File(destPath +"thumbnail_"+ destFileName);
                     Thumbnails.of(newFile).size(maxWidth,height).toFile(outFilePath);
                     result.put("thumbnail_url",imgFolder+destUrl+"thumbnail_"+destFileName);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
+            }finally {
+
             }
             result.put("url",imgFolder+destUrl+destFileName);
             result.put("originalFilename",file.getOriginalFilename());
