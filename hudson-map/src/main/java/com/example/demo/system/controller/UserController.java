@@ -53,7 +53,6 @@ public class UserController extends BaseController {
         if(StringUtils.isEmpty(password)){
             password=Constant.defaultPassword;
         }
-        password= MD5Util.getPassword(password);
         User user= User.builder().username(username)
                 .password(password)
                 .admin(false)
