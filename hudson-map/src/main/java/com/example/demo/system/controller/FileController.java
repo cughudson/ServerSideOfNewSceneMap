@@ -55,7 +55,9 @@ public class FileController extends BaseController {
 
             //写入目的文件
             String destFileName = UUID.randomUUID().toString().replaceAll("-", "") + suffix;
-            destFileName=MD5Util.getMd5(file.getBytes())+suffix;
+//            destFileName=MD5Util.getMd5(file.getBytes())+suffix;
+            //TODO 测试用
+            destFileName=UUID.randomUUID().toString().replaceAll("-","")+suffix;
             File newFile=new File(destPath + destFileName);
             if(newFile.exists()){
                  logger.info("已经存在相同的文件:"+destFileName);
