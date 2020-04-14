@@ -69,7 +69,7 @@ public class UserServiceImpl  extends BaseServiceImpl<User,UserMapper> implement
         if (del != null)
             example.and().andEqualTo(Constant.del, del);
         if (admin!=null)
-            example.and().andEqualTo(Constant.admin, del);
+            example.and().andEqualTo(Constant.admin, admin);
         if (!StringUtils.isEmpty(username))
             example.and().andLike(Constant.username, "%" + username + "%");
 
