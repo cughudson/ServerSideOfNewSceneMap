@@ -1,14 +1,13 @@
 package com.example.demo.system.service;
 
 import com.alibaba.fastjson.JSONObject;
-
 import java.util.List;
 
 public interface CommonService {
-    void insertLoginRecord(JSONObject json);
+  void insertLoginRecord(JSONObject json);
 
-    void insertFileRecord(JSONObject record);
+  void insertFileRecord(JSONObject record);
 
-    List<String> selectEnableHeadImg();
+  List<String> selectEnableHeadImg();
 
 }

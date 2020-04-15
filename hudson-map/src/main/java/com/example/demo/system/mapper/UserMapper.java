@@ -5,5 +5,5 @@ import com.example.demo.system.util.MyMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserMapper extends MyMapper<User>{
+public interface UserMapper extends MyMapper<User> {
 }

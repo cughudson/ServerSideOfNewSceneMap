@@ -6,14 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MyException extends RuntimeException {
-    private GenericResponse response;
+  private GenericResponse response;
 
-    public MyException(GenericResponse response) {
-        log.info("MyException:"+JSON.toJSONString(response));
-        this.response = response;
-    }
+  public MyException(GenericResponse response) {
+    log.info("MyException:" + JSON.toJSONString(response));
+    this.response = response;
+  }
 
-    public GenericResponse getResponse() {
-        return this.response;
-    }
+  public GenericResponse getResponse() {
+    return this.response;
+  }
 }

@@ -10,5 +10,5 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class MyPageInfo {
-    private Integer id;
+  private Integer id;
 }
