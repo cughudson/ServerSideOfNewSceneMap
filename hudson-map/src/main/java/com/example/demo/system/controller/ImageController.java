@@ -57,7 +57,7 @@ public class ImageController extends AbstractBaseController<Image, ImageService>
   @ApiOperation(value = "新增图片")
   public GenericResponse insertE(@RequestBody Image image) {
     if (getService().selectByPrimaryKey(image.getId()) != null) {
-      throw new MyException(error(ErrorCode.DATA_EXISTS, "该图片已经存在不能新增"));
+      return error(ErrorCode.DATA_EXISTS, "该图片已经存在不能新增");
     }
     image.setUserId(getUser().getId());
     image.setUploader(getUser().getUsername());
