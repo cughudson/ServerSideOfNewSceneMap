@@ -40,14 +40,14 @@ public class ImageController extends AbstractBaseController<Image, ImageService>
   @Autowired
   private ImageService imageService;
 
-  @PostMapping("/image/bounds")
+  @PostMapping({"/image/bounds","bounds"})
   @ApiOperation(value = "根据指定范围查找图片")
   public GenericResponse bounds(@RequestBody ImageBoundVO boundVO) {
     PageHelper.startPage(1, boundVO.getNumber());
     return success(imageService.bounds(boundVO));
   }
 
-  @PostMapping("/image/id")
+  @PostMapping({"/image/id","id"})
   @ApiOperation(value = "查找")
   public GenericResponse id(@RequestBody IdVO id) {
     return success(checkIdAndGet(id.getId()));
