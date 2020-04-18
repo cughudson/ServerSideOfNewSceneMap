@@ -134,14 +134,20 @@ public class ImageController extends AbstractBaseController<Image, ImageService>
           @ApiImplicitParam(name = Constant.pageNum, value = "页码", defaultValue = "1", dataType = "int"),
           @ApiImplicitParam(name = Constant.pageSize, value = "每页大小", defaultValue = Constant.defaultValue, dataType = "int"),
           @ApiImplicitParam(name = Constant.delete, value = "删除状态", dataType = "Boolean"),
+          @ApiImplicitParam(name = Constant.userId,required = false, value = "用戶id", dataType = "int"),
 
   })
   public GenericResponse list(@RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                               @RequestParam(name = "pageSize", required = false, defaultValue = Constant.defaultValue) Integer pageSize,
-                              Boolean delete) {
+                              Boolean delete,Integer userId) {
     PageHelper.startPage(pageNum, pageSize);
     Example example = getExample();
-    example.createCriteria().andEqualTo(Constant.delete, delete);
+    if(delete!=null){
+      example.createCriteria().andEqualTo(Constant.delete, delete);
+    }
+    if(userId!=null){
+      example.createCriteria().andEqualTo(Constant.userId, userId);
+    }
     List list = getService().selectByExample(example);
     PageInfo pageInfo = new PageInfo(list);
     return success(pageInfo);
