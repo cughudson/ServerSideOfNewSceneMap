@@ -39,7 +39,6 @@ public class FileUploadProgressListener implements ProgressListener {
     }
     session.setAttribute("upload_percent_" + id, percent);
     String str = items + "更新：upload_percent_" + id + "::" + percent + "\t " + bytesRead + "/" + contentLength;
-    log.info(str);
     long nowTime = System.currentTimeMillis() / 1000;
     if (nowTime != time) {
       time = nowTime;
