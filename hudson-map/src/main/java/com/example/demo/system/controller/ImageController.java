@@ -142,11 +142,12 @@ public class ImageController extends AbstractBaseController<Image, ImageService>
                               Boolean delete,Integer userId) {
     PageHelper.startPage(pageNum, pageSize);
     Example example = getExample();
+    Example.Criteria criteria= example.createCriteria();
     if(delete!=null){
-      example.createCriteria().andEqualTo(Constant.delete, delete);
+      criteria.andEqualTo(Constant.delete, delete);
     }
     if(userId!=null){
-      example.createCriteria().andEqualTo(Constant.userId, userId);
+      criteria.andEqualTo(Constant.userId, userId);
     }
     List list = getService().selectByExample(example);
     PageInfo pageInfo = new PageInfo(list);
