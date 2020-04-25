@@ -44,7 +44,9 @@ public class ImageController extends AbstractBaseController<Image, ImageService>
   @ApiOperation(value = "根据指定范围查找图片")
   public GenericResponse bounds(@RequestBody ImageBoundVO boundVO) {
     PageHelper.startPage(1, boundVO.getNumber());
-    return success(imageService.bounds(boundVO));
+    List<Image>  list=imageService.bounds(boundVO);
+    list.stream().forEach(image -> image.setUser(showUser(userService.selectByPrimaryKey(image.getUserId()))));
+    return success(list);
   }
 
   @PostMapping({"/image/id","id"})
