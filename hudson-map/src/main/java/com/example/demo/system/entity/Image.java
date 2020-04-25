@@ -1,5 +1,6 @@
 package com.example.demo.system.entity;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,6 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -71,4 +74,8 @@ public class Image implements Serializable {
   @ApiModelProperty("生成时间")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date createTime;//生成时间
+
+  @ApiModelProperty("上传人")
+  @Transient
+  private JSONObject user;
 }

@@ -4,9 +4,12 @@ import com.example.demo.system.response.ErrorCode;
 import com.example.demo.system.response.GenericResponse;
 import com.example.demo.system.response.MyException;
 import com.example.demo.system.response.ResponseFormat;
+import com.example.demo.system.service.UserService;
 import com.example.demo.system.util.GenericsUtil;
 import com.example.demo.system.util.SpringUtil;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import tk.mybatis.mapper.entity.Example;
 
@@ -20,6 +23,8 @@ public abstract class AbstractBaseController<T, M> extends BaseController {
     return service;
   }
 
+  @Autowired
+  public UserService userService;
   public Example getExample() {
     return getService().getExample();
   }

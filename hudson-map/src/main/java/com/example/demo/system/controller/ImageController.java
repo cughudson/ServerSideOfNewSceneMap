@@ -50,7 +50,13 @@ public class ImageController extends AbstractBaseController<Image, ImageService>
   @PostMapping({"/image/id","id"})
   @ApiOperation(value = "查找")
   public GenericResponse id(@RequestBody IdVO id) {
-    return success(checkIdAndGet(id.getId()));
+    Image image=checkIdAndGet(id.getId());
+    image.setUser(showUser(userService.selectByPrimaryKey(image.getUserId())));
+    return success(image);
+  }
+
+  public JSONObject showUser(User user){
+    return JSON.parseObject(JSON.toJSONString(user)).fluentRemove(Constant.password);
   }
 
   @PostMapping("/insert")
@@ -149,8 +155,11 @@ public class ImageController extends AbstractBaseController<Image, ImageService>
     if(userId!=null){
       criteria.andEqualTo(Constant.userId, userId);
     }
-    List list = getService().selectByExample(example);
+    List<Image> list = getService().selectByExample(example);
     PageInfo pageInfo = new PageInfo(list);
+    list.stream().forEach((i)->{
+      i.setUser(showUser(userService.selectByPrimaryKey(i.getUserId())));
+    });
     return success(pageInfo);
   }
 
