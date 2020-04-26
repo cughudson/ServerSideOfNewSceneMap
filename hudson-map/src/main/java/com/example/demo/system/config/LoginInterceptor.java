@@ -108,6 +108,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     url.add("/page/**");
     url.add("/admin/**");
     url.add("/image/bounds");
+    url.add("/image/list");
     url.add("/image/image/bounds");
   }
 
