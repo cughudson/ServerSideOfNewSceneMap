@@ -107,6 +107,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     url.add("/api/**");
     url.add("/page/**");
     url.add("/admin/**");
+    url.add("/image/bounds");
+    url.add("/image/image/bounds");
   }
 
   public List<String> getUrl() {
